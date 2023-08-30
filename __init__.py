@@ -1,41 +1,39 @@
+from typing import List
+
+
+
 from nonebot import on_message
-from nonebot.adapters.onebot.v11 import (
-    Bot,
-    GroupMessageEvent,
-    Message,
-    MessageEvent,
-)
+from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent, Message, MessageEvent
 from nonebot.rule import to_me
+
+from configs.config import NICKNAME, Config
 from models.friend_user import FriendUser
 from models.group_member_info import GroupInfoUser
 from services.log import logger
 from utils.utils import get_message_img, get_message_text
-from .data_source import get_chat_result, hello, no_result
-from configs.config import NICKNAME, Config
 
-__zx_plugin_name__ = "GPT2"
+from .data_source import get_chat_result, hello, no_result
+
+__zx_plugin_name__ = "GPT-2"
 __plugin_usage__ = f"""
 usage：
-    与{NICKNAME}普普通通的对话吧！
+    与{NICKNAME}普普通通的对话吧！(增加了本地GPT-2)
 """
 __plugin_version__ = 0.1
-__plugin_author__ = "DeadBoy2537"
+__plugin_author__ = "MirageMind"
 __plugin_settings__ = {
     "level": 5,
-    "cmd": ["GPT2", "gpt2"],
+    "cmd": ["GPT-2", "gpt-2],
 }
 __plugin_configs__ = {
-    "TL_KEY": {"value": [], "help": "图灵Key"},
-    "ALAPI_AI_CHECK": {"value": False, "help": "是否检测青云客骂娘回复", "default_value": False},
+    "TL_KEY": {"value": [], "help": "图灵Key", "type": List[str]},
     "TEXT_FILTER": {
         "value": ["鸡", "口交"],
         "help": "文本过滤器，将敏感词更改为*",
         "default_value": [],
-    },
+        "type": List[str],
+    }
 }
-Config.add_plugin_config(
-    "alapi", "ALAPI_TOKEN", None, help_="在 https://admin.alapi.cn/user/login 登录后获取token"
-)
 
 ai = on_message(rule=to_me(), priority=998)
 
@@ -60,11 +58,9 @@ async def _(bot: Bot, event: MessageEvent):
         await ai.finish(hello())
     img = img[0] if img else ""
     if isinstance(event, GroupMessageEvent):
-        nickname = await GroupInfoUser.get_group_member_nickname(
-            event.user_id, event.group_id
-        )
+        nickname = await GroupInfoUser.get_user_nickname(event.user_id, event.group_id)
     else:
-        nickname = await FriendUser.get_friend_nickname(event.user_id)
+        nickname = await FriendUser.get_user_nickname(event.user_id)
     if not nickname:
         if isinstance(event, GroupMessageEvent):
             nickname = event.sender.card or event.sender.nickname
