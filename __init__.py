@@ -23,7 +23,7 @@ __plugin_version__ = 0.1
 __plugin_author__ = "MirageMind"
 __plugin_settings__ = {
     "level": 5,
-    "cmd": ["GPT-2", "gpt-2],
+    "cmd": ["GPT-2", "gpt-2"],
 }
 __plugin_configs__ = {
     "TL_KEY": {"value": [], "help": "图灵Key", "type": List[str]},
