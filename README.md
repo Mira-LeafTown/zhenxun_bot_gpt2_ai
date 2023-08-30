@@ -6,6 +6,6 @@
 
 删除了青云客的接口
 
-使用前请先移除原版AI系统，不然就会出现双回复
+使用前请先关闭原版AI系统，并在data/configs/plugins2settings.yaml文件中将原版AI对应的limit_superuser设置为true
 
-可供接口访问的GPT-2: https://github.com/Mira-LeafTown/GPT2-chitchat-api
+配套使用的GPT-2本地接口: https://github.com/Mira-LeafTown/GPT2-chitchat-api
