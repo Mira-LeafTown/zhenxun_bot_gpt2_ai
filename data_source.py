@@ -131,9 +131,9 @@ def hello() -> str:
     )
     img = random.choice(os.listdir(IMAGE_PATH / "zai"))
     if img[-4:] == ".gif":
-        result += image(img, "zai")
+        result += image(IMAGE_PATH / "zai" / img)
     else:
-        result += image(img, "zai")
+        result += image(IMAGE_PATH / "zai" / img)
     return result
 
 
