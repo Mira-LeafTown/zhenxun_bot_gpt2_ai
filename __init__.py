@@ -13,7 +13,7 @@ from utils.utils import get_message_img, get_message_text
 from .data_source import get_chat_result, hello, no_result
 from configs.config import NICKNAME, Config
 
-__zx_plugin_name__ = "GPT2+AI"
+__zx_plugin_name__ = "GPT2"
 __plugin_usage__ = f"""
 usage：
     与{NICKNAME}普普通通的对话吧！
@@ -22,7 +22,7 @@ __plugin_version__ = 0.1
 __plugin_author__ = "DeadBoy2537"
 __plugin_settings__ = {
     "level": 5,
-    "cmd": ["GPT2+AI", "GPT2+Ai", "GPT2+ai", "gpt2+ai", "GPT2", "gpt2"],
+    "cmd": ["GPT2", "gpt2"],
 }
 __plugin_configs__ = {
     "TL_KEY": {"value": [], "help": "图灵Key"},
