@@ -4,8 +4,6 @@ import random
 
 import re
 
-import asyncio
-
 from configs.config import NICKNAME, Config
 from configs.path_config import DATA_PATH, IMAGE_PATH
 from services.log import logger
@@ -168,8 +166,7 @@ async def gpt_2(text:str) -> str:
     :return: 回复
     """
     try:
-        res = (await AsyncHttpx.get(f'{gpt2_config.gpt_2_api}/?key_word={text}')).text
-        await asyncio.sleep(60)
-        return res
+        res = await AsyncHttpx.get(f'{gpt2_config.gpt_2_api}/?key_word={text}', timeout=gpt2_config.gpt_2_timeout)
+        return res.text
     except Exception :
         return ''
