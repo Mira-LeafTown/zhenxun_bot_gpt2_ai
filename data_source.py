@@ -11,14 +11,12 @@ from utils.message_builder import face, image
 from .utils import ai_message_manager
 
 from nonebot import get_driver
-from .config import Config
+from .config import gpt2_config
 
 try:
     import ujson as json
 except ModuleNotFoundError:
     import json
-
-plugin_config = Config.parse_obj(get_driver().config)
 
 url = "http://openapi.tuling123.com/openapi/api/v2"
 
@@ -166,7 +164,7 @@ async def gpt_2(text:str) -> str:
     :return: 回复
     """
     try:
-        res = (await AsyncHttpx.get(f'{plugin_config.gpt_2_api}/?key_word={text}')).text
+        res = (await AsyncHttpx.get(f'{gpt2_config.gpt_2_api}/?key_word={text}')).text
         return res
     except Exception :
         return ''
