@@ -24,7 +24,6 @@ index = 0
 
 anime_data = json.load(open(DATA_PATH / "anime.json", "r", encoding="utf8"))
 
-
 async def get_chat_result(text: str, img_url: str, user_id: int, nickname: str) -> str:
     """
     获取 AI 返回值，顺序： 特殊回复 -> 图灵 -> GPT-2
@@ -37,31 +36,43 @@ async def get_chat_result(text: str, img_url: str, user_id: int, nickname: str) 
     global index
     ai_message_manager.add_message(user_id, text)
     special_rst = await ai_message_manager.get_result(user_id, nickname)
-    if special_rst:
-        ai_message_manager.add_result(user_id, special_rst)
-        return special_rst
-    if index == 5:
-        index = 0
-    if len(text) < 6 and random.random() < 0.6:
-        keys = anime_data.keys()
-        for key in keys:
-            if text.find(key) != -1:
-                return random.choice(anime_data[key]).replace("你", nickname)
-    rst = await tu_ling(text, img_url, user_id)
-    if not rst:
-        rst = await gpt_2(text)
-    if not rst:
+    
+    async def get_response():
+        if special_rst:
+            ai_message_manager.add_result(user_id, special_rst)
+            return special_rst
+        
+        if index == 5:
+            index = 0
+        if len(text) < 6 and random.random() < 0.6:
+            keys = anime_data.keys()
+            for key in keys:
+                if text.find(key) != -1:
+                    return random.choice(anime_data[key]).replace("你", nickname)
+        
+        rst = await tu_ling(text, img_url, user_id)
+        if not rst:
+            rst = await gpt_2(text)
+        return rst
+    
+    try:
+        response = await asyncio.wait_for(get_response(), timeout=60)
+        if not response:
+            return no_result()
+        
+        if nickname:
+            if len(nickname) < 5:
+                if random.random() < 0.5:
+                    nickname = "~".join(nickname) + "~"
+                    if random.random() < 0.2:
+                        if nickname.find("大人") == -1:
+                            nickname += "大~人~"
+            response = str(response).replace("小主人", nickname).replace("小朋友", nickname)
+        
+        ai_message_manager.add_result(user_id, response)
+        return response
+    except asyncio.TimeoutError:
         return no_result()
-    if nickname:
-        if len(nickname) < 5:
-            if random.random() < 0.5:
-                nickname = "~".join(nickname) + "~"
-                if random.random() < 0.2:
-                    if nickname.find("大人") == -1:
-                        nickname += "大~人~"
-        rst = str(rst).replace("小主人", nickname).replace("小朋友", nickname)
-    ai_message_manager.add_result(user_id, rst)
-    return rst
 
 
 # 图灵接口
