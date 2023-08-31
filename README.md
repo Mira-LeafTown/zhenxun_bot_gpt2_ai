@@ -4,7 +4,9 @@
 
 原项目: https://github.com/OVOU4/plugins_zhenxun_bot/blob/main/ai/
 
-删除了青云客的接口
+https://github.com/HibiKier/zhenxun_bot/tree/main/plugins/ai
+
+删除了青云客的接口 (不接入GPT-2就会变得很笨很笨!)
 
 使用前请先关闭原版AI系统，并在data/configs/plugins2settings.yaml文件中将原版AI对应的limit_superuser设置为true
 
