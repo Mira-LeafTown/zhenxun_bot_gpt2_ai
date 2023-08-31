@@ -4,6 +4,8 @@ import random
 
 import re
 
+import asyncio
+
 from configs.config import NICKNAME, Config
 from configs.path_config import DATA_PATH, IMAGE_PATH
 from services.log import logger
@@ -142,7 +144,7 @@ def hello() -> str:
 
 
 # 没有回答时回复内容
-async def no_result() -> str:
+def no_result() -> str:
     """
     没有回答时的回复
     """
@@ -167,6 +169,7 @@ async def gpt_2(text:str) -> str:
     """
     try:
         res = (await AsyncHttpx.get(f'{gpt2_config.gpt_2_api}/?key_word={text}')).text
+        await asyncio.sleep(60)
         return res
     except Exception :
         return ''
