@@ -142,7 +142,7 @@ def hello() -> str:
 
 
 # 没有回答时回复内容
-def no_result() -> str:
+async def no_result() -> str:
     """
     没有回答时的回复
     """
